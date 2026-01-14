@@ -64,13 +64,13 @@ export const stripeWebhooks = async (req, res) => {
   let event
 
   try {
-    event = Stripe.webhooks.constructEvent(
+    event = stripeInstace.webhooks.constructEvent(
       req.body,
       sig,
       process.env.STRIPE_WEBHOOK_SECRET
     )
   } catch (err) {
-    res.status(400).send(`webhook error ${err.message}`)
+    return res.status(400).send(`webhook error ${err.message}`)
   }
 
   switch (event.type) {
@@ -119,6 +119,6 @@ export const stripeWebhooks = async (req, res) => {
 }
 
 // Return a response to acknowledge receipt of the event
-response.json({ received: true });
+res.json({ received: true });
 
 }

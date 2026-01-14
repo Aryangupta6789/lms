@@ -51,7 +51,7 @@ const CourseDetails = () => {
     const token = await getToken()
 
     const res = await fetch(
-      'https://lms-backend-self-theta.vercel.app/user/purchase',
+      `${import.meta.env.VITE_BACKEND_URL}/user/purchase`,
       {
         method: 'POST',
         headers: {

@@ -121,7 +121,7 @@ function AddCource () {
       const token = await getToken()
 
       const res = await fetch(
-        'https://lms-backend-self-theta.vercel.app/educator/add-course',
+        `${import.meta.env.VITE_BACKEND_URL}/educator/add-course`,
         {
           method: 'POST',
           headers: {

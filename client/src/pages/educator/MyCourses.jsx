@@ -3,14 +3,14 @@ import { AppContext } from '../../context/AddContext'
 import Loading from '../../components/student/Loading'
 
 const MyCourses = () => {
-  const { currency, allCourses } = useContext(AppContext)
+  const { currency, educatorCourses } = useContext(AppContext)
   const [courses, setCourses] = useState(null)
 
   useEffect(() => {
-    if (allCourses) {
-      setCourses(allCourses)
+    if (educatorCourses) {
+      setCourses(educatorCourses)
     }
-  }, [allCourses])
+  }, [educatorCourses])
 
   return courses ? (
     <div className="h-screen flex flex-col md:p-8 p-4 pt-8">

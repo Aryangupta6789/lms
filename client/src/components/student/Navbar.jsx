@@ -6,7 +6,7 @@ import { AppContext } from '../../context/AddContext'
 
 const Navbar = () => {
   const navigate = useNavigate()
-  const isCourceListpage = useMatch('/cource-list/*')
+  const isCourceListpage = useMatch('/course-list/*')
 
   const { isEducator } = useContext(AppContext)
   const { openSignIn } = useClerk()
@@ -19,7 +19,7 @@ const Navbar = () => {
       const token = await getToken()
 
       const res = await fetch(
-        'https://lms-backend-self-theta.vercel.app/educator/update-role',
+        `${import.meta.env.VITE_BACKEND_URL}/educator/update-role`,
         {
           method: 'POST',
           headers: {

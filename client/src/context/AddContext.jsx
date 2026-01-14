@@ -8,7 +8,10 @@ export const AppContext = createContext()
 export const AppContextProvider = props => {
   const { getToken } = useAuth()
   const currency = import.meta.env.VITE_CURRENCY
+  const backendUrl = import.meta.env.VITE_BACKEND_URL
+
   const [allCourses, setAllCourses] = useState([])
+  const [educatorCourses, setEducatorCourses] = useState([])
   const [isEducator, setIsEducator] = useState(false)
   const [enrolledCourses, setEnrolledCourses] = useState([])
   const [dashboardData, setDashboardData] = useState(null)
@@ -74,7 +77,7 @@ export const AppContextProvider = props => {
       const token = await getToken()
 
       const res = await fetch(
-        'https://lms-backend-self-theta.vercel.app/user/enrolled-courses',
+        `${backendUrl}/user/enrolled-courses`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -96,7 +99,7 @@ export const AppContextProvider = props => {
     try {
       const token = await getToken()
       const res = await fetch(
-        'https://lms-backend-self-theta.vercel.app/educator/courses',
+        `${backendUrl}/educator/courses`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -105,7 +108,7 @@ export const AppContextProvider = props => {
       )
       const data = await res.json()
       if (data.success) {
-        setAllCourses(data.courses)
+        setEducatorCourses(data.courses)
       }
     } catch (err) {
       console.log(err)
@@ -116,7 +119,7 @@ export const AppContextProvider = props => {
     try {
       const token = await getToken()
       const res = await fetch(
-        'https://lms-backend-self-theta.vercel.app/educator/enrolled-students',
+        `${backendUrl}/educator/enrolled-students`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -135,7 +138,7 @@ export const AppContextProvider = props => {
     try {
       const token = await getToken()
       const res = await fetch(
-        'https://lms-backend-self-theta.vercel.app/educator/dashboard',
+        `${backendUrl}/educator/dashboard`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -151,7 +154,24 @@ export const AppContextProvider = props => {
     }
   }
 
+  const fetchAllCourses = async () => {
+  try {
+    const res = await fetch(
+      `${backendUrl}/course/all`
+    )
+
+    const data = await res.json()
+
+    if (data.success) {
+      setAllCourses(data.courses)
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}
+
   useEffect(() => {
+    fetchAllCourses()
     if (isEducator) {
       fetchEducatorCourses()
     }
@@ -164,6 +184,7 @@ export const AppContextProvider = props => {
   const value = {
     currency,
     allCourses,
+    educatorCourses,
     calculateRating,
     isEducator,
     setIsEducator,
