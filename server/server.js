@@ -26,17 +26,7 @@ const allowedOrigins = ['http://localhost:5173'] // Add your deployed frontend U
 
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
-      
-      // In development, allow localhost
-      // In production, you might want to switch to specific domains
-      // For now, we are allowing localhost and the user's specific deployments if added
-      // Or just allow all for this stage if debugging is priority:
-      callback(null, true) 
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    origin: ['http://localhost:5173', 'http://localhost:5174'],
     credentials: true 
   })
 )
