@@ -85,13 +85,19 @@ export const AppContextProvider = props => {
         }
       )
 
+      if (!res.ok) {
+        console.warn('Backend returned an error. This is likely due to the pending deployment fix.', res.status)
+        return
+      }
+
       const data = await res.json()
 
       if (data.success) {
         setEnrolledCourses(data.enrolledCourses)
       }
     } catch (err) {
-      console.log(err)
+      console.error('Failed to fetch enrolled courses:', err)
+      // Toast or simple log
     }
   }
 

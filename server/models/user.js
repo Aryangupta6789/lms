@@ -21,11 +21,11 @@ const userSchema = new mongoose.Schema({
     enrolledCourses:[
         {
             type:mongoose.Schema.Types.ObjectId,
-            ref:'Course'
+            ref:'course'
         }
     ],
 },{timestamps:true})
 
-const user = mongoose.model('user',userSchema)
+const user = mongoose.models.user || mongoose.model('user',userSchema)
 
 export default user
