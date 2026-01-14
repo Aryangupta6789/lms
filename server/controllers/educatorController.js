@@ -59,6 +59,18 @@ export const addCourse = async (req, res) => {
         message: 'Thumbnail not attached'
       })
     }
+    
+    // Convert buffer to base64 for Cloudinary
+    const b64 = Buffer.from(req.file.buffer).toString('base64');
+    let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+    
+    // ✅ CLOUDINARY UPLOAD
+    const imageUpload = await cloudinary.uploader.upload(
+      dataURI,
+      {
+        folder: 'courses'
+      }
+    )
 
     // ✅ SAFE PARSE
     let parsedCourseData
@@ -72,15 +84,6 @@ export const addCourse = async (req, res) => {
     }
 
     parsedCourseData.educator = userId
-
-    // ✅ CLOUDINARY UPLOAD
-    const imageUpload = await cloudinary.uploader.upload(
-      `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`,
-      {
-        folder: 'courses'
-      }
-    )
-
     parsedCourseData.courseThumbnail = imageUpload.secure_url
 
     // ✅ DB SAVE
